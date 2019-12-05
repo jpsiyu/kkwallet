@@ -1,7 +1,7 @@
 module.exports = {
   pluginOptions: {
     autoRouting: {
-      chunkNamePrefix: 'page-'
+      chunkNamePrefix: "page-"
     }
   }
-}
+};
