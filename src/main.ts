@@ -8,7 +8,7 @@ Vue.config.productionTip = false;
 /**
  * plugins
  */
-import '@/plugins/element.ts'
+import "@/plugins/element.ts";
 
 new Vue({
   router,

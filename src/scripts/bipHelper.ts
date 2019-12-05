@@ -1,5 +1,5 @@
-const bip39 = require('bip39')
+const bip39 = require("bip39");
 
 const random = (): string => {
-  return bip39.generateMnemonic()
-}
+  return bip39.generateMnemonic();
+};
