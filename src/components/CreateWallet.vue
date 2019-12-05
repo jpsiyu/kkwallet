@@ -34,14 +34,16 @@
       </el-row>
     </template>
     <template v-else-if="isNeedEncrypt">
-      <el-form :inline="true" :model="formData">
-        <el-form-item label="密码" prop="passwd">
-          <el-input v-model="formData.passwd"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="encrypt">确定</el-button>
-        </el-form-item>
-      </el-form>
+      <div class="cw-encrypt">
+        <el-form :inline="true" :model="formData">
+          <el-form-item label="密码" prop="passwd">
+            <el-input v-model="formData.passwd" placeholder="请输入密码"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click="encrypt">确定</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </template>
   </div>
 </template>
@@ -193,6 +195,16 @@ export default class CreateWallet extends Vue {
     padding: 5px 10px;
     margin: 10px;
     cursor: pointer;
+  }
+  &-encrypt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
