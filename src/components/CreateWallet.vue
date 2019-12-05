@@ -1,7 +1,9 @@
 <template>
   <div class="cw">
     <template v-if="isEmpty">
-      <strong @click="createWallet" class="cw-textBtn cw-create">初始化助记词</strong>
+      <div class="cw-empty">
+        <strong @click="createWallet" class="cw-textBtn cw-empty-create">初始化助记词</strong>
+      </div>
     </template>
     <template v-else-if="isCreated">
       <el-row class="cw-row">
@@ -9,8 +11,28 @@
           <span class="cw-col-item">{{ item }}</span>
         </el-col>
       </el-row>
-      <span class="cw-textBtn">确定已抄下助记词!</span>
+      <span class="cw-textBtn" @click="writed">确定已抄下助记词!</span>
     </template>
+    <template v-else-if="isNeedRecovert">
+      <el-row class="cw-row">
+        <el-col class="cw-col" :span="8" v-for="n in 24" :key="n">
+          <span class="cw-col-item" :readonly="true">{{recover[n-1]}}</span>
+        </el-col>
+      </el-row>
+      <el-row class="cw-row">
+        <span
+          v-for="(item, index) in shuffleArray"
+          :key="index"
+          class="cw-word"
+          @click="chooseWord(item)"
+        >{{item}}</span>
+      </el-row>
+      <el-row>
+        <el-button @click="matchBack">回退</el-button>
+        <el-button type="primary" @click="match">匹配</el-button>
+      </el-row>
+    </template>
+    <template v-else-if="Nee"></template>
   </div>
 </template>
 
@@ -23,11 +45,15 @@ import { WalletState } from "@/scripts/walletStruct";
 export default class CreateWallet extends Vue {
   private mnemonic: string[];
   private walletState: WalletState;
+  private recover: string[];
+  private shuffleArray: Array<string>;
 
   constructor() {
     super();
     this.mnemonic = [];
     this.walletState = WalletState.Empty;
+    this.recover = [];
+    this.shuffleArray = [];
   }
 
   get isEmpty(): boolean {
@@ -38,8 +64,12 @@ export default class CreateWallet extends Vue {
     return this.walletState === WalletState.Created;
   }
 
-  get isEncrypted(): boolean {
-    return this.walletState === WalletState.Encrypted;
+  get isNeedRecovert(): boolean {
+    return this.walletState === WalletState.NeedRecovert;
+  }
+
+  get isNeedEncrypt(): boolean {
+    return this.walletState === WalletState.NeedEncrypt;
   }
 
   get isStored(): boolean {
@@ -47,9 +77,55 @@ export default class CreateWallet extends Vue {
   }
 
   createWallet(): void {
-    const str = bipHelper.random();
+    const str: string = bipHelper.random();
     this.mnemonic = str.split(" ");
     this.walletState = WalletState.Created;
+  }
+
+  shuffle<T>(array: Array<T>): void {
+    for (let i = array.length - 1; i >= 0; i--) {
+      let randomIndex = Math.floor(Math.random() * (i + 1));
+      let itemAtIndex = array[randomIndex];
+
+      array[randomIndex] = array[i];
+      array[i] = itemAtIndex;
+    }
+  }
+
+  writed(): void {
+    this.shuffleArray = Object.assign([], this.mnemonic);
+    this.shuffle(this.shuffleArray);
+    this.walletState = WalletState.NeedRecovert;
+  }
+
+  match(): void {
+    let matched: boolean = true;
+    for (let i: number = 0; i < this.mnemonic.length; i++) {
+      if (this.mnemonic[i] !== this.recover[i]) {
+        matched = false;
+        break;
+      }
+    }
+    if (!matched) {
+      this.$message({ message: "助记词不匹配", type: "error" });
+      return;
+    }
+
+    this.$message({ message: "助记词匹配", type: "success" });
+  }
+
+  chooseWord(word: string): void {
+    const index: number = this.shuffleArray.findIndex((e: string) => {
+      return e === word;
+    });
+    if (index !== -1) {
+      this.shuffleArray.splice(index, 1);
+    }
+    this.recover.push(word);
+  }
+
+  matchBack(): void {
+    this.recover.pop();
   }
 }
 </script>
@@ -61,12 +137,23 @@ export default class CreateWallet extends Vue {
   justify-content: center;
   align-items: center;
   color: #303133;
+  position: relative;
 
-  &-create {
-    margin-top: 100px;
+  &-empty {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   &-row {
     width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
   &-col {
     margin: 5px 0;
@@ -75,10 +162,18 @@ export default class CreateWallet extends Vue {
       border: 1px solid #dcdfe6;
       width: 80%;
       padding: 10px 0;
+      height: 44px;
+      box-sizing: border-box;
     }
   }
   &-textBtn {
     text-decoration: underline;
+    cursor: pointer;
+  }
+  &-word {
+    border: 1px solid #dcdfe6;
+    padding: 5px 10px;
+    margin: 10px;
     cursor: pointer;
   }
 }

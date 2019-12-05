@@ -1,8 +1,8 @@
 enum WalletState {
   Empty = 1,
   Created,
-  Reverted,
-  Encrypted,
+  NeedRecovert,
+  NeedEncrypt,
   Stored
 }
 
