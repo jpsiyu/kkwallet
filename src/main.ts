@@ -5,6 +5,11 @@ import store from "./store";
 
 Vue.config.productionTip = false;
 
+/**
+ * plugins
+ */
+import '@/plugins/element.ts'
+
 new Vue({
   router,
   store,
