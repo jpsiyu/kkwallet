@@ -30,9 +30,19 @@
       <el-row>
         <el-button @click="matchBack">回退</el-button>
         <el-button type="primary" @click="match">匹配</el-button>
+        <el-button type="warning" @click="forceMatch">强制匹配</el-button>
       </el-row>
     </template>
-    <template v-else-if="Nee"></template>
+    <template v-else-if="isNeedEncrypt">
+      <el-form :inline="true" :model="formData">
+        <el-form-item label="密码" prop="passwd">
+          <el-input v-model="formData.passwd"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="encrypt">确定</el-button>
+        </el-form-item>
+      </el-form>
+    </template>
   </div>
 </template>
 
@@ -47,6 +57,7 @@ export default class CreateWallet extends Vue {
   private walletState: WalletState;
   private recover: string[];
   private shuffleArray: Array<string>;
+  private formData: { passwd: string };
 
   constructor() {
     super();
@@ -54,6 +65,7 @@ export default class CreateWallet extends Vue {
     this.walletState = WalletState.Empty;
     this.recover = [];
     this.shuffleArray = [];
+    this.formData = { passwd: "" };
   }
 
   get isEmpty(): boolean {
@@ -111,7 +123,7 @@ export default class CreateWallet extends Vue {
       return;
     }
 
-    this.$message({ message: "助记词匹配", type: "success" });
+    this.walletState = WalletState.NeedEncrypt;
   }
 
   chooseWord(word: string): void {
@@ -127,6 +139,12 @@ export default class CreateWallet extends Vue {
   matchBack(): void {
     this.recover.pop();
   }
+
+  forceMatch(): void {
+    this.recover = Object.assign([], this.mnemonic);
+  }
+
+  encrypt(): void {}
 }
 </script>
 
