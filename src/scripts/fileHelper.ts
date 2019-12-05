@@ -13,8 +13,9 @@ if (!fs.existsSync(keystoreDir)) {
   fs.mkdirSync(keystoreDir)
 }
 
-const saveKeystore = (keystore: object): void => {
-  console.log(keystore)
+const saveKeystore = (keystore: any): void => {
+  const fileName = 'UTC--' + new Date().toISOString() + '--' + keystore.address
+  fs.writeFileSync(path.join(keystoreDir, fileName), JSON.stringify(keystore))
 }
 
 export default {
