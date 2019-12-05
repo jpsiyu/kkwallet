@@ -32,6 +32,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-vue": "^5.0.0",
+    "postcss-nested": "^4.2.1",
     "prettier": "^1.19.1",
     "typescript": "~3.5.3",
     "vue-auto-routing": "^0.4.0",
