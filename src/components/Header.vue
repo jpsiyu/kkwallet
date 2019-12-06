@@ -31,7 +31,8 @@ export default class Header extends Vue {
   }
 
   private onNetClick(): void {
-    this.$refs.net.show();
+    const refOfNet: any = this.$refs.net;
+    refOfNet.show();
   }
 }
 </script>
