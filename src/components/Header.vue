@@ -6,8 +6,8 @@
     </div>
     <div class="hd-right">
       <div class="hd-right-net" @click="onNetClick">
-        <span class="hd-right-net__circle"></span>
-        <span class="hd-right-net__name">MainNet</span>
+        <span class="hd-right-net__circle" :style="'background:'+currentNet.color"></span>
+        <span class="hd-right-net__name">{{currentNet.name}}</span>
         <i class="el-icon-arrow-down"></i>
       </div>
       <img class="hd-right__acc" src="@/assets/logo.png" alt />
@@ -26,7 +26,10 @@ import Net from "@/components/pop/Net.vue";
   components: { Net }
 })
 export default class Header extends Vue {
-  
+  get currentNet(): Net {
+    return this.$store.state.currentNet;
+  }
+
   private onNetClick(): void {
     this.$refs.net.show();
   }
@@ -80,7 +83,6 @@ export default class Header extends Vue {
         font-size: 12px;
       }
       &__circle {
-        background-color: palevioletred;
         border-radius: 50%;
         width: 12px;
         height: 12px;

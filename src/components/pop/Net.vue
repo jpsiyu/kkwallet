@@ -2,8 +2,13 @@
   <div class="net" v-show="visible">
     <div class="net-mask" @click="hide"></div>
     <div class="net-main">
-      <div class="net-main-item" v-for="(item, index) in nets" :key="index">
-        <i class="el-icon-check" :class="{'net-main-item__hide': item.netId !== currentId}"></i>
+      <div
+        class="net-main-item"
+        v-for="(item, index) in nets"
+        :key="index"
+        @click="switchNet(item)"
+      >
+        <i class="el-icon-check" :class="{'net-main-item__hide': item.netId !== currentNet.netId}"></i>
         <span :style="'background:'+item.color" class="net-main-item__circle"></span>
         <span>{{item.name}}</span>
       </div>
@@ -20,7 +25,10 @@ import { Net } from "@/scripts/network/netStruct";
 export default class NetComp extends Vue {
   private visible: boolean = false;
   private nets: Net[] = [];
-  private currentId: number = 1;
+
+  get currentNet(): Net {
+    return this.$store.state.currentNet;
+  }
 
   mounted(): void {
     this.nets = netCfg.available;
@@ -32,6 +40,11 @@ export default class NetComp extends Vue {
 
   public hide(): void {
     this.visible = false;
+  }
+
+  public switchNet(item: Net): void {
+    this.$store.commit("setNet", item);
+    this.hide()
   }
 }
 </script>
