@@ -18,6 +18,18 @@ const saveKeystore = (keystore: any): void => {
   fs.writeFileSync(path.join(keystoreDir, fileName), JSON.stringify(keystore))
 }
 
+const getAllKeystore = (): any => {
+  const files = fs.readdirSync(keystoreDir)
+  const keystores = files.map((e: string): any => {
+    const filePath = path.join(keystoreDir, e)
+    const ksStr = fs.readFileSync(filePath, { encoding: 'utf8' })
+    const ksObj = JSON.parse(ksStr)
+    return ksObj
+  })
+  return keystores
+}
+
 export default {
-  saveKeystore
+  saveKeystore,
+  getAllKeystore
 }
