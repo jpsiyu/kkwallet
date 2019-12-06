@@ -12,7 +12,7 @@
       </div>
       <img class="hd-right__acc" src="@/assets/logo.png" alt />
       <div class="hd-right-pop">
-        <Net ref="net" />
+        <NetComp ref="net" />
       </div>
     </div>
   </div>
@@ -21,9 +21,10 @@
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import Net from "@/components/pop/Net.vue";
+import NetComp from "@/components/pop/Net.vue";
+import { Net } from "@/scripts/network/netStruct";
 @Component({
-  components: { Net }
+  components: { NetComp }
 })
 export default class Header extends Vue {
   get currentNet(): Net {
