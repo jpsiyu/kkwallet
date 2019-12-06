@@ -1,6 +1,7 @@
 <template>
   <div class="net" v-show="visible">
     <div class="net-mask" @click="hide"></div>
+    <h3>Networks</h3>
     <div class="net-main">
       <div
         class="net-main-item"
@@ -44,7 +45,7 @@ export default class NetComp extends Vue {
 
   public switchNet(item: Net): void {
     this.$store.commit("setNet", item);
-    this.hide()
+    this.hide();
   }
 }
 </script>
@@ -67,11 +68,12 @@ export default class NetComp extends Vue {
     z-index: -1;
   }
   &-main {
+    border-top: 0.1px solid #ebeef5;
     &-item {
       display: flex;
       align-items: center;
       cursor: pointer;
-      padding: 5px;
+      padding: 10px 5px;
       &:hover {
         background: rgba(0, 0, 0, 0.3);
       }

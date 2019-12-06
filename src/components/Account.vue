@@ -36,6 +36,7 @@ export default class Account extends Vue {
 
 <style lang="postcss" scoped>
 .acc {
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
