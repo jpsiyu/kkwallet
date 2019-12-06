@@ -12,6 +12,6 @@ class Net {
   }
 }
 
-export default {
+export {
   Net
 }

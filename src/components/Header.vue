@@ -5,15 +5,33 @@
       <strong class="hd-left__title">KKWALLET</strong>
     </div>
     <div class="hd-right">
-      <div class="hd-right-net">
+      <div class="hd-right-net" @click="onNetClick">
         <span class="hd-right-net__circle"></span>
         <span class="hd-right-net__name">MainNet</span>
         <i class="el-icon-arrow-down"></i>
       </div>
       <img class="hd-right__acc" src="@/assets/logo.png" alt />
+      <div class="hd-right-pop">
+        <Net ref="net" />
+      </div>
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import Vue from "vue";
+import Component from "vue-class-component";
+import Net from "@/components/pop/Net.vue";
+@Component({
+  components: { Net }
+})
+export default class Header extends Vue {
+  
+  private onNetClick(): void {
+    this.$refs.net.show();
+  }
+}
+</script>
 
 <style lang="postcss" scoped>
 .hd {
@@ -39,6 +57,7 @@
   &-right {
     display: flex;
     align-items: center;
+    position: relative;
     &__acc {
       margin-left: 10px;
       width: 30px;
@@ -69,6 +88,12 @@
       & .el-icon-arrow-down {
         margin-left: 10px;
       }
+    }
+    &-pop {
+      position: absolute;
+      z-index: 1000;
+      right: 0;
+      top: 30px;
     }
   }
 }
